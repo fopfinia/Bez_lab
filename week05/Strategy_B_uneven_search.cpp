@@ -2,16 +2,19 @@
 #include <chrono>
 #include <random>
 
-#define N 70000
+#define N 100000
 
 void func(int (&arr)[N], int meaning){
     for (int j = 0; j != N; ++j){
         if (arr[j] == meaning){
-            int x = arr[j];
-            arr[j] = arr[0];
-            arr[0] = x;
-            break;
-        }
+            if (j > 0){
+               int x = arr[j];
+                arr[j] = arr[j-1];
+                arr[j-1] = x;
+                break; 
+            }
+            else break;
+        }      
     }
 }
 

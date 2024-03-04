@@ -2,15 +2,29 @@
 #include <chrono>
 #include <random>
 
-#define N 70000
+#define N 100000
 
-void func(int (&arr)[N], int meaning){
+void func(int (&arr)[N], int meaning, int (&counter)[N]){
     for (int j = 0; j != N; ++j){
         if (arr[j] == meaning){
-            int x = arr[j];
-            arr[j] = arr[0];
-            arr[0] = x;
-            break;
+            if(j > 0){
+                counter[j]++;
+                for (int k = j-1; k >= 0; --k){
+                    if (counter[k] < counter[k+1]){
+                        int x = arr[k];
+                        arr[k] = arr[k+1];
+                        arr[k+1] = x;
+                        counter[k]++;
+                        counter[k+1]--;
+                    }
+                    else break;
+                }
+                break; 
+            }
+            else {
+                counter[j]++;
+                break;
+            }
         }
     }
 }
@@ -59,11 +73,12 @@ int main(){
             std::cout << arr[i] << ' ';
         }*/
         std::cout << std::endl;
+        int counter[N] = {0};
         std::default_random_engine rng3(seed);
         std::uniform_int_distribution<unsigned> dstr3(0,max);
         auto begin = std::chrono::steady_clock::now();
-        for (int i = 0; i != 1000000; ++i){
-            func(arr, dstr3(rng3));
+        for (int i = 0; i != 100000; ++i){
+            func(arr, dstr3(rng3), counter);
         }  
         auto end = std::chrono::steady_clock::now();
         auto time_span = std::chrono::duration_cast<std::chrono::microseconds>(end - begin);

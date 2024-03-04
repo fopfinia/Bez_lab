@@ -2,7 +2,7 @@
 #include <chrono>
 #include <random>
 
-#define N 80000
+#define N 30000
 
 void func(int (&arr)[N], int meaning){
     for (int j = 0; j != N; ++j){
@@ -24,7 +24,7 @@ int main(){
         arr[i] = dstr(rng);
     }
     auto begin = std::chrono::steady_clock::now();
-    for (int i = 0; i != 100000; ++i){
+    for (int i = 0; i != 1000000; ++i){
         func(arr, arr[dstr(rng)]);
     }  
     auto end = std::chrono::steady_clock::now();
